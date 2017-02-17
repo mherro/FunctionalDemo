@@ -27,6 +27,8 @@ public class DemoOne {
         parallelDemo();
         
         customFunctionalInterfaceDemo();
+        
+        mapReduceExample();
 
         System.out.println();
         System.out.println("DEMO DONE");
@@ -77,7 +79,7 @@ public class DemoOne {
         // Iterate through a list
         
         System.out.println();
-        System.out.println("Running demoOne");
+        System.out.println("Running streamDemo");
         
         List<Robot> robots = createRobots();
         
@@ -91,7 +93,7 @@ public class DemoOne {
         // Iterate through a list with lambda
 
         System.out.println();
-        System.out.println("Running demoTwo");
+        System.out.println("Running lamdaDemo");
         
         List<Robot> robots = createRobots();
 
@@ -127,7 +129,7 @@ public class DemoOne {
         // Sorting
         
         System.out.println();
-        System.out.println("Running demoThree");
+        System.out.println("Running sortingDemo");
         
         List<Robot> robots = createRobots();
 
@@ -138,6 +140,7 @@ public class DemoOne {
         System.out.println();
         System.out.println("Sorted by Size");
         robots.stream().sorted((r1, r2) -> r1.getSize().compareTo(r2.getSize())).forEach(System.out::println);
+     
         
     }
 
@@ -193,6 +196,31 @@ public class DemoOne {
         robots.stream().forEach(System.out::println);
     }
     
+    private static void mapReduceExample() {
+        System.out.println();
+        System.out.println("Running mapReduceExample");
+
+        List<Robot> robots = createRobots();
+        
+        robots.stream().map(r -> r.getBatteryLevel()).forEach(System.out::println);
+        
+        Integer totalBatteryLevel = robots.stream().map(r -> r.getBatteryLevel()).reduce(0, (bl1, bl2) -> bl1 + bl2);
+    
+        /* // Reduce function
+         
+             T result = identity;
+             
+             for (T element : this stream)
+                 result = accumulator.apply(result, element)
+          
+             return result;
+         
+         */
+        
+        
+        System.out.println("totalBatteryLevel: " + totalBatteryLevel);
+        
+    }
     
     
 }
