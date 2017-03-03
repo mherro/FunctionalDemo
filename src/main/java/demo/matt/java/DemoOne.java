@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -25,6 +27,8 @@ public class DemoOne {
         functionalInterfaceDemo();
         
         parallelDemo();
+        
+        parallelLimitThreadDemo();
         
         customFunctionalInterfaceDemo();
         
@@ -181,6 +185,38 @@ public class DemoOne {
     
     }
     
+    private static void parallelLimitThreadDemo() {
+
+        int threadCount = 3;
+        
+        System.out.println();
+        System.out.println("Running parallelLimitThreadDemo");
+        System.out.println("Limit number of threads to " + threadCount);
+
+        List<Robot> robots = createRobots();
+
+
+        Function<Robot, String> upperRobotName = r -> r.getName().toUpperCase();
+        
+        ForkJoinPool forkJoinPool = new ForkJoinPool(threadCount);
+        try {
+            forkJoinPool.submit(() ->
+                robots.parallelStream().map(upperRobotName).forEach(x -> System.out.println(Thread.currentThread().getId() + " : " + x))
+            ).get();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    
+        long threadId = Thread.currentThread().getId();
+        
+    
+    }
+    
+    
     private static void customFunctionalInterfaceDemo() {
         System.out.println();
         System.out.println("Running customFunctionalInterfaceDemo");
@@ -189,9 +225,7 @@ public class DemoOne {
         
         Recharger<Robot> robotRecharger = r -> r.setBatteryLevel(100);
         
-        for(Robot r : robots) {
-            robotRecharger.recharge(r);
-        }
+        robots.forEach(robotRecharger);
         
         robots.stream().forEach(System.out::println);
     }

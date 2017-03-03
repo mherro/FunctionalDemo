@@ -1,8 +1,8 @@
 package demo.matt.java;
 
-@FunctionalInterface
-public interface Recharger<T> {
+import java.util.function.Consumer;
 
-    void recharge(T t);
-    
+@FunctionalInterface
+public interface Recharger<T> extends Consumer<T> {
+
 }
