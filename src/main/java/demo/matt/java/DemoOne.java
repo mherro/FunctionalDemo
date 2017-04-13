@@ -10,6 +10,8 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.swing.text.html.HTMLEditorKit.Parser;
+
 public class DemoOne {
 
     
@@ -195,9 +197,13 @@ public class DemoOne {
 
         List<Robot> robots = createRobots();
 
-
+        robots.addAll(createRobots());
+        robots.addAll(createRobots());
+        robots.addAll(createRobots());
+        
         Function<Robot, String> upperRobotName = r -> r.getName().toUpperCase();
         
+        // Limit amount of threads used by parallelStream
         ForkJoinPool forkJoinPool = new ForkJoinPool(threadCount);
         try {
             forkJoinPool.submit(() ->
@@ -210,8 +216,6 @@ public class DemoOne {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    
-        long threadId = Thread.currentThread().getId();
         
     
     }
@@ -256,5 +260,12 @@ public class DemoOne {
         
     }
     
+    
+    private static void completableFutureDemo() {
+        
+        
+        
+    
+    }
     
 }
